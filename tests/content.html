@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Content proof</title>
+<style>
+  body { font: 16px/1.55 Georgia, serif; background: #fff9ed; color: #4b3f1d; max-width: 760px; margin: 40px auto; padding: 0 16px; }
+  h1, h2, h3 { font-weight: normal; letter-spacing: 0.06em; }
+  h2 { border-top: 1px solid #4b3f1d33; padding-top: 24px; margin-top: 40px; }
+  .key { font-weight: bold; margin-right: 6px; }
+  .meta { font-size: 14px; opacity: 0.8; }
+  ol li { margin: 4px 0; }
+  table { border-collapse: collapse; } td { padding: 2px 12px 2px 0; }
+</style>
+</head>
+<body>
+<h1>Content proof</h1>
+<p class="meta">Everything the site will show from the book, in one place, for checking against the printed pages.</p>
+<div id="out"></div>
+
+<script src="../content/book-questions.js"></script>
+<script src="../content/types.js"></script>
+<script src="../content/intro.js"></script>
+<script>
+  const { QUESTIONS: Q, TYPES: T, INTRO: I } = window.ENNEAGRAM;
+  const esc = (s) => String(s).replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
+  let h = '';
+  h += '<h2>QUEST</h2><p>' + esc(Q.quest.instructions) + '</p>';
+  for (const g of Q.quest.groups) {
+    h += '<h3>Group ' + g.id + '</h3>';
+    for (const o of g.options) h += '<p><span class="key">' + o.key + '.</span>' + esc(o.text) + '</p>';
+  }
+  h += '<h3>Key</h3><table>' + Object.entries(Q.quest.key).map(([c, t]) =>
+    '<tr><td>' + c + '</td><td>Type ' + t + ', ' + esc(T.types[t].name) + '</td></tr>').join('') + '</table>';
+  h += '<h2>TAS</h2><p class="meta">' + Object.entries(Q.tas.scale).map(([n, l]) => n + ' ' + l).join(' · ') + '</p>';
+  for (let t = 1; t <= 9; t++) {
+    h += '<h3>Type ' + t + ': ' + esc(T.types[t].name) + '</h3><ol>' +
+      Q.tas.statements[t].map((s) => '<li>' + esc(s) + '</li>').join('') + '</ol>';
+  }
+  h += '<h2>Type pages</h2>';
+  for (let t = 1; t <= 9; t++) {
+    const x = T.types[t];
+    h += '<h3>Type ' + t + ': ' + esc(x.name) + '</h3>' +
+      '<p class="meta">' + esc(x.subtitle) + ': ' + x.traits.join(', ') + ' · ' + T.triads[x.triad].label + ' triad</p>' +
+      '<p class="meta">Basic fear: ' + esc(x.basicFear) + '<br>Basic desire: ' + esc(x.basicDesire) +
+      '<br>Superego message: "' + esc(x.superego) + '"' + (x.motto ? '<br>Motto: "' + esc(x.motto) + '"' : '') + '</p>' +
+      x.intro.map((p) => '<p>' + esc(p) + '</p>').join('');
+  }
+  h += '<h2>' + esc(I.title) + '</h2>' + I.paragraphs.map((p) => '<p>' + esc(p) + '</p>').join('');
+  document.getElementById('out').innerHTML = h;
+</script>
+</body>
+</html>

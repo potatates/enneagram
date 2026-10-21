@@ -1,0 +1,66 @@
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; overflow-x: clip; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: var(--size-body);
+  line-height: 1.55;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+a { color: inherit; text-underline-offset: 0.18em; text-decoration-thickness: 1px; }
+
+button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
+
+:focus-visible { outline: 2px solid var(--gold-line); outline-offset: 3px; border-radius: 2px; }
+
+.skip {
+  position: absolute; left: 8px; top: 8px; z-index: 50;
+  background: var(--ink); color: var(--paper); padding: 6px 12px;
+  transform: translateY(-200%);
+}
+.skip:focus { transform: none; }
+
+.display {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: var(--size-display);
+  letter-spacing: var(--track-display);
+  line-height: 1.15;
+  margin: 0;
+}
+
+/* The rounded pill button from Figma ("Show Results"). */
+.pill {
+  display: inline-block;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 1.35rem;
+  color: var(--ink);
+  text-decoration: none;
+  padding: 0.45em 1.4em;
+  border: 1.5px solid var(--ink);
+  border-radius: 999px;
+  transition: background var(--fast) var(--ease), color var(--fast) var(--ease), border-color var(--fast) var(--ease);
+}
+.pill:hover, .pill:focus-visible { background: var(--gold-wash); color: var(--gold); border-color: var(--gold-line); }
+
+main { outline: none; }
+
+.page {
+  padding: calc(var(--header-h) + 28px) var(--gutter) 96px;
+  max-width: 1280px;
+  margin: 0 auto;
+  animation: page-in var(--slow) var(--ease) backwards; /* not "both": a lasting transform would trap position: fixed children */
+}
+
+@keyframes page-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 1ms !important; transition-duration: 1ms !important; }
+}

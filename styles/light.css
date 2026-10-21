@@ -1,0 +1,62 @@
+/* Beings of Light (Figma: Beings of Light, light and dark). */
+
+.light { max-width: 760px; overflow-x: clip; } /* the glow reaches past the text; keep it from widening the page on phones */
+.light-title { text-align: center; margin-bottom: 44px; }
+
+.light-read { position: relative; --x: 50%; --y: 80px; --r: clamp(84px, 12vw, 120px); }
+.light-text p, .light-reveal p { margin: 0 0 1.1em; }
+.light-text, .light-reveal { line-height: 1.6; }
+
+/* The reveal layer is the same text, drawn only inside the circle of light. */
+.light-reveal {
+  position: absolute; inset: -40px; padding: 40px;
+  pointer-events: none; opacity: 0;
+  color: var(--ink);
+  background: radial-gradient(circle at calc(var(--x) + 40px) calc(var(--y) + 40px),
+    #fffdf6 0, #fff9ed calc(var(--r) * 0.55), #e9f3f6 calc(var(--r) * 0.85), transparent var(--r));
+  -webkit-mask-image: radial-gradient(circle at calc(var(--x) + 40px) calc(var(--y) + 40px), #000 calc(var(--r) * 0.7), transparent var(--r));
+          mask-image: radial-gradient(circle at calc(var(--x) + 40px) calc(var(--y) + 40px), #000 calc(var(--r) * 0.7), transparent var(--r));
+  transition: opacity var(--slow) var(--ease);
+}
+
+/* The lamp (Figma: the flame at the right edge). */
+.lamp {
+  position: fixed; right: clamp(16px, 5vw, 96px); top: 50%; transform: translateY(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  color: var(--ink); z-index: 20;
+}
+.lamp svg { width: 26px; height: 40px; fill: none; stroke: currentColor; stroke-width: 1.4; transition: fill var(--slow) var(--ease); }
+.lamp .core { fill: currentColor; stroke: none; opacity: 0.25; }
+.lamp-label { font-size: 0.9rem; max-width: 7.6em; text-align: center; line-height: 1.2; }
+.lamp:hover { color: var(--gold); }
+
+.light-hint { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); margin: 0; font-size: 1rem; color: #cfc6b4; text-align: center; pointer-events: none; z-index: 20; }
+.light-hint:empty { display: none; }
+.light-source { font-size: 0.92rem; color: var(--ink-soft); margin-top: 40px; }
+
+@media (max-width: 760px) {
+  /* Bottom corner on phones: the header covers the top, and it's where a thumb rests. */
+  .lamp { top: auto; bottom: 18px; transform: none; right: var(--gutter); flex-direction: row;
+    padding: 8px 14px; border-radius: 999px; background: var(--paper); border: 1px solid var(--ink-faint); }
+  .lamp svg { width: 16px; height: 24px; }
+  .lamp-label { max-width: none; white-space: nowrap; }
+  body.lights-off .lamp { background: #111; border-color: #333; }
+  .light-hint { bottom: 76px; width: calc(100% - 32px); }
+}
+
+/* ---------- Lights off ---------- */
+
+body.lights-off { background: var(--dark); transition: background var(--slow) var(--ease); }
+body { transition: background var(--slow) var(--ease); }
+body.lights-off .site-header, body.lights-off .light-title, body.lights-off .lamp { color: #f3ead6; }
+body.lights-off .menu-button { color: #f3ead6; }
+body.lights-off .light-text { color: #2b2415; transition: color var(--slow) var(--ease); }
+body.lights-off .light-text strong { color: #40351d; }
+body.lights-off .light-reveal { opacity: 1; }
+body.lights-off .light-source { color: #3b321c; }
+body.lights-off .lamp .core { opacity: 0; }
+body.lights-off .lamp svg { filter: drop-shadow(0 0 6px #fff6); }
+
+@media (prefers-reduced-motion: reduce) {
+  .light-reveal { transition: none; }
+}

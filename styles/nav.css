@@ -1,0 +1,73 @@
+/* Top nav (desktop) and the dark slide-in menu (phone). */
+
+.site-header {
+  position: absolute; inset: 0 0 auto 0;
+  height: var(--header-h);
+  display: flex; align-items: center; justify-content: center;
+  padding: 0 var(--gutter);
+  z-index: 10;
+}
+
+.home-mark {
+  position: absolute; left: var(--gutter); top: 50%; transform: translateY(-50%);
+  width: 30px; height: 30px; opacity: 0.75;
+  transition: opacity var(--fast) var(--ease);
+}
+.home-mark:hover, .home-mark:focus-visible { opacity: 1; }
+.home-mark svg { width: 100%; height: 100%; fill: none; stroke: currentColor; stroke-width: 1.2; }
+body[data-route="home"] .home-mark { visibility: hidden; }
+
+/* Figma: three links spread across a 930px row, current one underlined. */
+.top-nav {
+  display: flex; justify-content: space-between;
+  width: min(930px, 100% - 120px);
+  font-size: var(--size-nav);
+}
+.top-nav a {
+  text-decoration: none;
+  padding-bottom: 3px;
+  background: linear-gradient(currentColor, currentColor) left bottom / 0 1px no-repeat;
+  transition: background-size var(--slow) var(--ease);
+}
+.top-nav a:hover { background-size: 100% 1px; }
+.top-nav a[aria-current="page"] { background-size: 100% 1px; }
+
+.menu-button { display: none; width: 33px; height: 27px; }
+.menu-button svg { width: 100%; height: 100%; fill: currentColor; }
+.menu-button .line { fill: none; stroke: currentColor; stroke-width: 1.4; }
+
+/* Phone */
+@media (max-width: 760px) {
+  .top-nav, .home-mark { display: none; }
+  .site-header { justify-content: flex-start; }
+  .menu-button { display: block; }
+}
+
+.menu {
+  position: fixed; inset: 0 auto 0 0; z-index: 40;
+  width: min(402px, 100%);
+  background: var(--night); color: var(--night-ink);
+  padding: 72px 36px 48px;
+  overflow-y: auto;
+  font-size: 1.45rem;
+  transform: translateX(-100%);
+  transition: transform var(--slow) var(--ease);
+  box-shadow: 0 0 0 100vmax transparent;
+}
+.menu.open { transform: none; box-shadow: 0 0 0 100vmax #231d1066; }
+.menu nav { display: flex; flex-direction: column; align-items: flex-start; gap: 0.55em; }
+.menu a, .menu-expand { text-decoration: underline; text-underline-offset: 0.2em; text-decoration-thickness: 1px; }
+.menu a[aria-current="page"] { color: #fff; text-decoration-thickness: 2px; }
+.menu-close { position: absolute; top: 18px; right: 22px; font-size: 2.2rem; line-height: 1; color: var(--night-ink); }
+
+.menu-expand { position: relative; text-align: left; }
+.menu-expand .caret {
+  position: absolute; left: -22px; top: 0.55em;
+  border: 6px solid transparent; border-left: 9px solid currentColor;
+  transition: transform var(--fast) var(--ease); transform-origin: 4px 6px;
+}
+.menu-expand[aria-expanded="true"] .caret { transform: rotate(90deg); }
+
+.menu-types { padding: 0.3em 0 0 1.4em; display: grid; gap: 0.15em; font-size: 1.3rem; }
+.menu-types .triad { margin-top: 0.4em; }
+.menu-types a.type { margin-left: 1.2em; }

@@ -1,0 +1,37 @@
+/* Design tokens, taken from Mia's Figma file. */
+:root {
+  /* Color */
+  --paper: #fff9ed;          /* page background */
+  --ink: #4b3f1d;            /* text, lines, borders */
+  --ink-soft: #6b5f40;       /* secondary text (6:1 on paper) */
+  --ink-faint: #4b3f1d33;    /* hairlines */
+  --gold: #b47b00;           /* selected fills, dots, large text (Figma) */
+  --gold-text: #8f6200;      /* gold for small text, readable on paper and wash */
+  --gold-wash: #faeed7;      /* selected fill */
+  --gold-line: #745707;      /* selected border */
+  --night: #231d10;          /* sidebar and phone menu */
+  --night-ink: #f3ead6;      /* text on night */
+  --dark: #000;              /* Beings of Light (dark) */
+
+  /* Type */
+  --font-display: 'Old Standard TT', 'Century Expanded', 'Century Schoolbook', Georgia, serif;
+  --font-body: 'EB Garamond', 'Adobe Garamond Pro', Garamond, Georgia, serif;
+  --track-display: 0.15em;   /* Figma: 9.2px on 61px */
+  --size-display: clamp(2.4rem, 1.4rem + 4vw, 3.85rem);
+  --size-body: clamp(1.125rem, 1rem + 0.35vw, 1.3rem);
+  --size-nav: 1.4rem;
+  --measure: 36rem;          /* comfortable line length */
+
+  /* Space */
+  --gutter: clamp(16px, 4vw, 48px);
+  --header-h: 84px;
+
+  /* Motion */
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --fast: 180ms;
+  --slow: 600ms;
+}
+
+@media (max-width: 760px) {
+  :root { --header-h: 64px; }
+}

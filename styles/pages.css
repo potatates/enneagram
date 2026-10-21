@@ -1,0 +1,49 @@
+/* ---------- Home ---------- */
+
+.home {
+  display: flex; flex-direction: column; align-items: center;
+  text-align: center;
+  padding-top: calc(var(--header-h) + 36px);
+}
+
+.home-title { color: var(--ink); line-height: 1; margin: 0; font-weight: 400; }
+.home-title span { display: block; font-family: var(--font-body); }
+.home-title .t1 { font-size: clamp(2.6rem, 1.6rem + 3.6vw, 3.85rem); letter-spacing: 0.15em; }
+.home-title .t2 { font-size: clamp(1.6rem, 1.1rem + 1.8vw, 2.4rem); letter-spacing: 0.13em; margin: 0.45em 0 0.35em; }
+.home-title .t3 { font-size: clamp(3.2rem, 1.9rem + 4.6vw, 4.85rem); letter-spacing: 0.15em; }
+
+.home .enneagram { width: min(360px, 78vw); margin-top: clamp(20px, 4vw, 28px); }
+
+.home-cta { margin-top: 36px; }
+.home-note { margin: 14px 0 0; font-size: 1.05rem; color: var(--ink-soft); text-wrap: balance; }
+
+/* ---------- Enneagram symbol ---------- */
+
+.enneagram { display: block; overflow: visible; }
+.enneagram .ring, .enneagram .figure { fill: none; stroke: var(--ink); stroke-linejoin: round; }
+.enneagram .ring { stroke-width: 0.4; opacity: 0.85; }
+.enneagram .figure { stroke-width: 0.55; }
+.enneagram .num {
+  font-family: var(--font-body); font-size: 9.5px; fill: var(--ink);
+  text-anchor: middle; dominant-baseline: central;
+}
+.enneagram .dot { fill: var(--gold); opacity: 0; transition: opacity var(--fast) var(--ease); }
+.enneagram .num { transition: fill var(--fast) var(--ease); }
+.enneagram a:hover .num, .enneagram a:focus-visible .num, .enneagram .pt.on .num, .enneagram .pt.lit .num { fill: var(--gold); }
+.enneagram a:hover .dot, .enneagram a:focus-visible .dot, .enneagram .pt.on .dot, .enneagram .pt.lit .dot { opacity: 1; }
+.enneagram .pt.on .num { font-weight: 600; }
+
+/* Lines draw themselves in once, on first load. */
+.enneagram.draw .ring, .enneagram.draw .figure {
+  stroke-dasharray: var(--len); stroke-dashoffset: var(--len);
+  animation: draw 2.2s var(--ease) forwards;
+}
+.enneagram.draw .figure { animation-delay: 0.5s; animation-duration: 2.6s; }
+.enneagram.draw .num { opacity: 0; animation: fade 0.8s var(--ease) forwards; animation-delay: calc(1.2s + var(--i) * 80ms); }
+@keyframes draw { to { stroke-dashoffset: 0; } }
+@keyframes fade { to { opacity: 1; } }
+
+/* ---------- Placeholder pages (until their stage is built) ---------- */
+
+.placeholder { text-align: center; }
+.placeholder p { color: var(--ink-soft); margin-top: 1.5em; }
