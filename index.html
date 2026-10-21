@@ -15,9 +15,13 @@
 <link rel="stylesheet" href="styles/test.css">
 <link rel="stylesheet" href="styles/types.css">
 <link rel="stylesheet" href="styles/light.css">
+<link rel="stylesheet" href="styles/magic.css">
 </head>
 <body>
 <a class="skip" href="#view">Skip to content</a>
+
+<!-- Old paper, and light falling through a prism across it. -->
+<div class="prism-light" aria-hidden="true"><span class="beam b1"></span><span class="beam b2"></span><span class="beam b3"></span></div>
 
 <header class="site-header">
   <a class="home-mark" href="#home" aria-label="Home">
@@ -25,7 +29,9 @@
   </a>
   <nav class="top-nav" aria-label="Main">
     <a href="#light" data-route="light">Beings of Light</a>
+    <span class="sep" aria-hidden="true">✦</span>
     <a href="#test" data-route="test">Test Yourself</a>
+    <span class="sep" aria-hidden="true">✦</span>
     <a href="#understand" data-route="understand">Understand Your Type</a>
   </nav>
   <button class="menu-button" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="menu">
@@ -57,6 +63,7 @@
 <script src="src/scoring.js"></script>
 <script src="src/state.js"></script>
 <script src="src/enneagram.js"></script>
+<script src="src/share.js"></script>
 <script src="src/pages/home.js"></script>
 <script src="src/pages/test.js"></script>
 <script src="src/pages/understand.js"></script>

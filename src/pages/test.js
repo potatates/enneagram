@@ -7,6 +7,7 @@
   const S = E.state;
   const STEPS = ['intro', 'quest-1', 'quest-2', 'bridge', 'rate', 'result'];
   const SCALE = Object.entries(Q.tas.scale).map(([n, label]) => ({ n: Number(n), label }));
+  const G = E.enneagram.GROWTH, St = E.enneagram.STRESS;
   const WORDS = ['', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine'];
 
   const go = (step) => { location.hash = '#test/' + step; };
@@ -205,7 +206,8 @@
     let at = Math.min(st.cursor, items.length - 1);
     let timer = null;
 
-    function draw(focus) {
+    // dir: 'next' or 'prev' slides the new statement in from that side.
+    function draw(focus, dir) {
       const { type, i } = items[at];
       const answered = S.answeredCount();
       body.innerHTML = `
@@ -213,7 +215,7 @@
           <span>Statement ${at + 1} of ${items.length}</span>
           <div class="bar" role="progressbar" aria-label="Statements answered" aria-valuemin="0" aria-valuemax="${items.length}" aria-valuenow="${answered}"><span style="width:${answered / items.length * 100}%"></span></div>
         </div>
-        <p class="statement" tabindex="-1">${esc(statement(type, i))}</p>
+        <p class="statement${dir ? ' in-' + dir : ''}" tabindex="-1">${esc(statement(type, i))}</p>
         ${scaleButtons(type, i)}
         <div class="one-nav">
           <button class="text-button prev" type="button" ${at === 0 ? 'disabled' : ''}>← Previous</button>
@@ -228,7 +230,7 @@
     function pick(v) {
       const { type, i } = items[at];
       st.tas[type][i] = v; S.save();
-      draw(true);
+      draw(true, 'stay'); // show the choice without replaying the statement's entrance
       clearTimeout(timer);
       // Move on by itself after a beat, so the choice is seen before it changes.
       // Always to the very next statement: jumping ahead to the next unanswered
@@ -238,15 +240,15 @@
         else if (S.complete()) { finish(); return; }
         else at = items.findIndex((it) => st.tas[it.type][it.i] == null); // last one done, some earlier left
         st.cursor = at; S.save();
-        draw(true);
+        draw(true, 'next');
       }, 320);
     }
 
     body.addEventListener('click', (e) => {
       const b = e.target.closest('.scale button');
       if (b) return pick(Number(b.dataset.v));
-      if (e.target.closest('.prev') && at > 0) { clearTimeout(timer); at--; st.cursor = at; S.save(); draw(true); }
-      if (e.target.closest('.skip-next') && at < items.length - 1) { clearTimeout(timer); at++; st.cursor = at; S.save(); draw(true); }
+      if (e.target.closest('.prev') && at > 0) { clearTimeout(timer); at--; st.cursor = at; S.save(); draw(true, 'prev'); }
+      if (e.target.closest('.skip-next') && at < items.length - 1) { clearTimeout(timer); at++; st.cursor = at; S.save(); draw(true, 'next'); }
       if (e.target.closest('.to-result')) finish();
     });
 
@@ -254,7 +256,7 @@
       if (!document.body.contains(body)) { document.removeEventListener('keydown', onKey); return; }
       if (e.target.closest('input, textarea') || e.metaKey || e.ctrlKey || e.altKey) return;
       if (/^[1-5]$/.test(e.key)) { e.preventDefault(); pick(Number(e.key)); }
-      if (e.key === 'ArrowLeft' && at > 0) { at--; st.cursor = at; S.save(); draw(true); }
+      if (e.key === 'ArrowLeft' && at > 0) { clearTimeout(timer); at--; st.cursor = at; S.save(); draw(true, 'prev'); }
     }
     document.addEventListener('keydown', onKey);
     draw(false);
@@ -297,18 +299,27 @@
       <p class="result-sub">${sub}</p>
 
       <article class="result-card${strongish ? '' : ' muted'}">
-        <div class="result-type">
-          <span class="type-num big">${lead.type}</span>
-          <div>
-            <p class="type-name">${esc(t.name)}</p>
-            <p class="type-sub">${esc(t.subtitle)}</p>
-            <p class="type-traits">${t.traits.join(' · ')}</p>
+        <div class="result-symbol"></div>
+        <div class="result-info">
+          <div class="result-type">
+            <div>
+              <p class="type-kicker">Type ${lead.type}</p>
+              <p class="type-name">${esc(t.name)}</p>
+              <p class="type-sub">${esc(t.subtitle)}</p>
+            </div>
           </div>
+          <p class="type-traits">${t.traits.join(' · ')}</p>
+          ${strongish ? `<blockquote class="result-motto"><p>“${esc(t.motto || t.superego)}”</p>
+            <footer>${t.motto ? 'Their motto' : 'Their inner message'}</footer></blockquote>` : ''}
+          <p class="score-line"><b>${lead.score}</b> out of 75 · <span class="verdict v-${lead.verdict.key}">${lead.verdict.label}</span></p>
+          ${meter(lead)}
+          <p class="verdict-text">${esc(lead.verdict.text)}</p>
+          ${strongish ? `<div class="result-actions">
+            <a class="pill" href="#type-${lead.type}">Read about the ${esc(t.name.replace(/^The /, ''))}</a>
+            <button class="text-button save-card" type="button">Save as image</button>
+          </div>` : ''}
         </div>
-        <p class="score-line"><b>${lead.score}</b> out of 75 · <span class="verdict v-${lead.verdict.key}">${lead.verdict.label}</span></p>
-        ${meter(lead)}
-        <p class="verdict-text">${esc(lead.verdict.text)}</p>
-        ${strongish ? `<a class="pill" href="#type-${lead.type}">Read about the ${esc(t.name.replace(/^The /, ''))}</a>` : ''}
+        ${strongish ? `<p class="result-paths"><span class="g">In growth, toward ${G[lead.type]}</span> <span class="s">Under stress, toward ${St[lead.type]}</span></p>` : ''}
       </article>
 
       ${r.checked.length > 1 ? `<h2 class="small-head">Every type you checked</h2>
@@ -326,7 +337,7 @@
         }).join('')}
       </div>
 
-      <p class="book-note">From the book: no test is certain. Read the type descriptions and see which one you recognise yourself in. When you find it, you will know.</p>
+      <p class="book-note">From the book: no test is certain. Read the type descriptions and see which one you recognize yourself in. When you find it, you will know.</p>
       <div class="actions"><button class="text-button again" type="button">Take the test again</button></div>`, { cls: 'test-result' });
 
     page.querySelector('.other-types').addEventListener('click', (e) => {
@@ -339,6 +350,23 @@
       S.save();
       go('rate');
     });
+    page.querySelector('.result-symbol').replaceWith(E.enneagram.create({
+      highlight: lead.type, paths: strongish ? lead.type : null, sheen: strongish, draw: true,
+      label: strongish ? `The enneagram with Type ${lead.type} lit, and arrows to Type ${G[lead.type]} (growth) and Type ${St[lead.type]} (stress)` : `The enneagram with Type ${lead.type} marked`,
+    }));
+
+    page.querySelector('.save-card')?.addEventListener('click', async (e) => {
+      const b = e.currentTarget;
+      b.disabled = true; b.textContent = 'Drawing…';
+      const blob = await E.share.card(lead);
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `enneagram-type-${lead.type}.png`;
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+      b.disabled = false; b.textContent = 'Save as image';
+    });
+
     page.querySelector('.again').addEventListener('click', () => { S.reset(); go('quest-1'); });
     return page;
   }

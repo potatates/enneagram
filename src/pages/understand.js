@@ -37,7 +37,7 @@
         </div>
         ${mine ? '' : '<p class="understand-cta">Not sure which is yours? <a href="#test">Take the test</a>.</p>'}`;
 
-      const svg = E.enneagram.create({ link: (n) => '#type-' + n, highlight: mine });
+      const svg = E.enneagram.create({ link: (n) => '#type-' + n, highlight: mine, sheen: true });
       page.querySelector('.understand-symbol').replaceWith(svg);
 
       // Pointing at a type or a center lights its points on the symbol.

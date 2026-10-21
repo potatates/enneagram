@@ -48,9 +48,11 @@ src/
   nav.js               top nav and phone menu
   state.js             quiz progress, saved in the browser
   scoring.js           QUEST code -> type, TAS sum -> verdict, combined result
-  enneagram.js         draws the symbol as SVG
+  enneagram.js         draws the symbol as SVG, with the growth and stress lines
+  share.js             "Save as image": the result as a 1080 x 1350 card
   pages/               one file per page
-styles/                tokens.css holds the colors, fonts and spacing from Figma
+styles/                tokens.css holds the colors, fonts and spacing from Figma;
+                       magic.css holds the paper grain and prism light
 vendor/fonts/          EB Garamond and Old Standard TT (SIL Open Font License)
 tests/
   scoring.test.html    open in a browser: 41 checks of the scoring and content

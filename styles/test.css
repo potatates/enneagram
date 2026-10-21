@@ -95,7 +95,7 @@
 
 /* ---------- TAS ---------- */
 
-.count { margin: 38px 0 0; font-size: 0.95rem; color: var(--ink-soft); }
+.count { margin: 22px 0 0; font-size: 0.95rem; color: var(--ink-soft); }
 .bar { height: 3px; background: var(--ink-faint); border-radius: 3px; margin-top: 8px; overflow: hidden; }
 .bar span { display: block; height: 100%; background: var(--gold); transition: width var(--slow) var(--ease); }
 
@@ -103,20 +103,25 @@
 .statement:focus { outline: none; }
 .statement {
   font-size: clamp(1.45rem, 1.15rem + 1.2vw, 2rem); line-height: 1.35;
-  min-height: 6.2em; margin: 30px 0 22px;
+  min-height: 4.4em; margin: 18px 0 20px;
   display: flex; align-items: center;
   animation: page-in var(--slow) var(--ease) both;
 }
+.statement.in-next { animation: in-next 420ms var(--ease) both; }
+.statement.in-stay { animation: none; }
+.statement.in-prev { animation: in-prev 420ms var(--ease) both; }
+@keyframes in-next { from { opacity: 0; transform: translateX(36px); } to { opacity: 1; transform: none; } }
+@keyframes in-prev { from { opacity: 0; transform: translateX(-36px); } to { opacity: 1; transform: none; } }
 
 .scale { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
 .scale button {
   display: flex; flex-direction: column; align-items: center; gap: 2px;
-  padding: 12px 4px; border: 1px solid var(--ink-faint); border-radius: 12px; background: var(--paper);
+  padding: 22px 4px 18px; border: 1px solid var(--ink-faint); border-radius: 14px; background: var(--paper);
   transition: background var(--fast) var(--ease), border-color var(--fast) var(--ease);
 }
 .scale button:hover { border-color: var(--ink); }
-.scale .n { font-family: var(--font-display); font-size: 1.4rem; line-height: 1.1; }
-.scale .w { font-size: 0.85rem; color: var(--ink-soft); line-height: 1.2; text-align: center; }
+.scale .n { font-family: var(--font-display); font-size: 1.9rem; line-height: 1.1; }
+.scale .w { font-size: 0.92rem; color: var(--ink-soft); line-height: 1.2; text-align: center; }
 .scale button.on { background: var(--gold-wash); border-color: var(--gold-line); box-shadow: 0 0 0 1px var(--gold-line); }
 .scale button.on .n, .scale button.on .w { color: var(--gold-text); }
 
@@ -137,12 +142,41 @@
 .result-card {
   margin: 36px auto 0; padding: clamp(22px, 4vw, 36px);
   border: 1px solid var(--gold-line); border-radius: 18px; background: var(--gold-wash);
-  display: grid; gap: 16px; justify-items: start;
+  display: grid; grid-template-columns: 250px 1fr; grid-template-areas: 'sym info' 'paths info'; grid-template-rows: auto 1fr;
+  column-gap: 36px; row-gap: 10px; align-items: start;
+  position: relative; overflow: hidden;
 }
+/* A faint band of prism light across the card. */
+.result-card::before {
+  content: ''; position: absolute; width: 70%; height: 16px; right: -16%; top: 74px; transform: rotate(-24deg);
+  background: linear-gradient(180deg, var(--prism)); filter: blur(1.5px); opacity: 0.26;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 35%, #000 65%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 35%, #000 65%, transparent);
+  pointer-events: none;
+}
+.result-card > * { position: relative; }
 .result-card.muted { background: var(--paper); border-color: var(--ink-faint); }
+.result-card .enneagram { grid-area: sym; width: 100%; margin-top: 8px; }
+.result-info { grid-area: info; display: grid; gap: 14px; justify-items: start; }
+.result-paths { grid-area: paths; margin: 0; display: grid; gap: 4px; font-size: 0.95rem; color: var(--ink-soft); justify-items: center; }
+.result-paths span { display: flex; align-items: center; gap: 8px; }
+.result-paths span::before { content: ''; width: 22px; border-top: 2px solid; }
+.result-paths .g::before { border-image: linear-gradient(90deg, var(--prism)) 1; }
+.result-paths .s::before { border-top: 1.5px dashed var(--ink); }
 .result-type { display: flex; align-items: center; gap: 22px; }
-.type-num.big { width: 88px; height: 88px; font-size: 3.8rem; }
-.result-type .type-name { font-size: 1.9rem; }
+.result-info .type-traits { margin: 0; }
+.result-motto { margin: 4px 0 0; padding: 0 0 0 18px; border-left: 2px solid; border-image: linear-gradient(180deg, var(--prism)) 1; }
+.result-motto p { margin: 0; font-family: var(--font-display); font-style: italic; font-size: 1.45rem; letter-spacing: 0.02em; }
+.result-motto footer { font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-soft); margin-top: 4px; }
+.result-actions { display: flex; align-items: center; gap: 22px; flex-wrap: wrap; margin-top: 6px; }
+.test-result { max-width: 940px; }
+.test-result > :not(.result-card) { max-width: 760px; margin-left: auto; margin-right: auto; }
+.result-type .type-kicker { margin: 0; font-size: 0.85rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold-text); }
+.result-type .type-name { font-family: var(--font-display); font-size: 2.2rem; letter-spacing: 0.08em; }
+@media (max-width: 760px) {
+  .result-card { grid-template-columns: 1fr; grid-template-areas: 'sym' 'paths' 'info'; }
+  .result-card .enneagram { max-width: 240px; justify-self: center; }
+}
 .score-line { margin: 4px 0 0; }
 .score-line b { font-family: var(--font-display); font-size: 1.6rem; font-weight: 400; }
 .verdict { font-style: italic; }

@@ -1,0 +1,113 @@
+/* The magic: an old page, and light through a prism falling across it.
+   Color appears only as light (beams, glints, the sheen on the symbol), so
+   the paper, ink and gold of the design stay in charge. */
+
+:root {
+  --prism: #d4517a, #e0892a, #c9a417, #5fa84a, #2b9bb3, #5a6fd6, #9a5cc8;
+}
+
+/* ---------- Old paper ---------- */
+
+/* Fine grain, and edges warmed the way old pages yellow. */
+body::before {
+  content: ''; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  background:
+    radial-gradient(ellipse at 50% 45%, transparent 60%, #b47b000d 85%, #b47b001a 100%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.29 0 0 0 0 0.25 0 0 0 0 0.11 0 0 0 0.09 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  transition: opacity var(--slow) var(--ease);
+}
+
+/* ---------- Light through a prism ---------- */
+
+.prism-light { position: fixed; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; transition: opacity var(--slow) var(--ease); }
+.beam {
+  position: absolute; display: block;
+  /* The spectrum runs across the beam, as light leaves a prism; the ends fade out. */
+  background: linear-gradient(180deg, var(--prism));
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 30%, #000 65%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 30%, #000 65%, transparent);
+  filter: blur(1.5px); opacity: var(--o);
+  transform-origin: center;
+  animation: breathe 16s var(--ease) infinite alternate;
+}
+/* A long band from the top right, as if the sun came through a crystal on the sill. */
+.b1 { --o: 0.3; width: 64vw; height: 30px; right: -16vw; top: 12vh; transform: rotate(-24deg); }
+.b2 { --o: 0.2; width: 36vw; height: 12px; right: -6vw; top: 25vh; transform: rotate(-24deg); animation-delay: -6s; }
+/* A small spill at the bottom left. */
+.b3 { --o: 0.18; width: 30vw; height: 18px; left: -8vw; bottom: 10vh; transform: rotate(-24deg); animation-delay: -11s; }
+
+@keyframes breathe {
+  from { translate: 0 0; opacity: var(--o, 0.16); }
+  to { translate: -3vw 2vh; opacity: calc(var(--o, 0.16) * 0.55); }
+}
+
+/* The dark reading room has no sunlight. */
+body.lights-off .prism-light, body.lights-off::before { opacity: 0; }
+/* The type sidebar is dark too; keep the light on the page. */
+
+/* ---------- Glints: tiny four-point stars ---------- */
+
+.glint {
+  position: absolute; width: var(--s, 12px); height: var(--s, 12px); pointer-events: none;
+  background: var(--c, var(--gold));
+  clip-path: polygon(50% 0, 60% 40%, 100% 50%, 60% 60%, 50% 100%, 40% 60%, 0 50%, 40% 40%);
+  opacity: 0; animation: twinkle var(--t, 5s) ease-in-out var(--d, 0s) infinite;
+}
+@keyframes twinkle {
+  0%, 70%, 100% { opacity: 0; transform: scale(0.3) rotate(0deg); }
+  80% { opacity: 0.9; transform: scale(1) rotate(45deg); }
+  90% { opacity: 0; transform: scale(0.4) rotate(90deg); }
+}
+
+/* ---------- The symbol ---------- */
+
+.enneagram .sheen {
+  fill: none; stroke-width: 1.1; stroke-linecap: round; stroke-linejoin: round;
+  stroke-dashoffset: 0; opacity: 0.95;
+  animation: run var(--dur) linear var(--delay) infinite;
+}
+.enneagram .sheen.blur { stroke-width: 2.6; opacity: 0.4; }
+.enneagram.draw .sheen {
+  opacity: 0;
+  animation: run var(--dur) linear calc(var(--delay) + 3s) infinite, appear 1.2s linear calc(var(--delay) + 3s) forwards;
+}
+.enneagram.draw .sheen.blur { --peak: 0.4; }
+@keyframes appear { to { opacity: var(--peak, 0.95); } }
+@keyframes run { to { stroke-dashoffset: var(--neg-len); } }
+
+/* Growth and stress lines on a type page. */
+.enneagram .path-line { stroke-width: 1.3; stroke-linecap: round; }
+.enneagram .path-line.stress { stroke: var(--ink); stroke-dasharray: 2.2 2.2; stroke-width: 0.9; }
+.enneagram .arrowhead.stress { fill: var(--ink); }
+.enneagram .arrowhead.growth { fill: #5a6fd6; }
+.enneagram .pt.end .num { fill: var(--ink); font-weight: 600; }
+
+/* ---------- Pills catch the light ---------- */
+
+.pill:not(:disabled):hover, .pill:not(:disabled):focus-visible {
+  border-color: transparent;
+  background:
+    linear-gradient(var(--gold-wash), var(--gold-wash)) padding-box,
+    linear-gradient(100deg, var(--prism)) border-box;
+  background-size: 100% 100%, 200% 100%;
+  animation: shimmer 3s linear infinite;
+  color: var(--ink);
+}
+@keyframes shimmer { to { background-position: 0 0, 200% 0; } }
+
+/* ---------- Ornaments ---------- */
+
+.fleuron { display: block; text-align: center; color: var(--gold); font-size: 0.9rem; letter-spacing: 1.2em; margin: 40px 0 0; padding-left: 1.2em; }
+
+/* An illuminated first letter, lit by the prism. */
+.drop::first-letter {
+  float: left; font-family: var(--font-display); font-size: 4.1em; line-height: 0.82;
+  margin: 0.06em 0.1em 0 -0.02em; padding: 0.02em 0.04em 0;
+  background: linear-gradient(135deg, var(--gold-line) 18%, #b8456b 42%, #4a5fc4 64%, var(--gold-line) 88%);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .beam, .glint, .enneagram .sheen, .pill:hover { animation: none !important; }
+  .glint { opacity: 0.6; }
+}

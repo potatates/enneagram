@@ -3,6 +3,8 @@
   const E = window.ENNEAGRAM;
   const T = E.TYPES;
   const WORDS = ['', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine'];
+  const PLURAL = ['', 'Ones', 'Twos', 'Threes', 'Fours', 'Fives', 'Sixes', 'Sevens', 'Eights', 'Nines'];
+  const G = E.enneagram.GROWTH, St = E.enneagram.STRESS;
   const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 
   function sidebar(current) {
@@ -54,6 +56,10 @@
               <p class="type-title">${esc(t.name)}</p>
               <p class="type-sub">${esc(t.subtitle)}</p>
               <div class="type-symbol"></div>
+              <ul class="paths">
+                <li class="growth"><span class="key" aria-hidden="true"></span><span><b>In growth</b>, ${PLURAL[n]} move toward <a href="#type-${G[n]}">${T.types[G[n]].name.replace(/^The /, 'the ')}</a> (${G[n]}).</span></li>
+                <li class="stress"><span class="key" aria-hidden="true"></span><span><b>Under stress</b>, toward <a href="#type-${St[n]}">${T.types[St[n]].name.replace(/^The /, 'the ')}</a> (${St[n]}).</span></li>
+              </ul>
               <dl class="facts">
                 <div><dt>Traits</dt><dd>${t.traits.join(', ')}</dd></div>
                 <div><dt>Basic fear</dt><dd>${esc(t.basicFear)}</dd></div>
@@ -63,7 +69,7 @@
             </header>
             <div class="type-body">
               ${t.motto ? `<p class="motto">“${esc(t.motto)}”</p>` : ''}
-              ${t.intro.map((p) => `<p>${esc(p)}</p>`).join('')}
+              ${t.intro.map((p, i) => `<p${i === 0 ? ' class="drop"' : ''}>${esc(p)}</p>`).join('')}
               ${quizNote(n)}
               <p class="source">From <em>The Wisdom of the Enneagram</em> by Don Richard Riso and Russ Hudson, the opening of the chapter on Type ${WORDS[n]}.</p>
             </div>
@@ -71,7 +77,8 @@
         </article>`;
 
       page.querySelector('.type-symbol').replaceWith(E.enneagram.create({
-        link: (k) => '#type-' + k, highlight: n, label: 'The enneagram, with Type ' + n + ' marked',
+        link: (k) => '#type-' + k, highlight: n, paths: n,
+        label: `The enneagram, with Type ${n} marked and arrows to Type ${G[n]} (growth) and Type ${St[n]} (stress)`,
       }));
 
       page.querySelector('.check-this')?.addEventListener('click', () => {

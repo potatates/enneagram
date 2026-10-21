@@ -51,6 +51,20 @@ Home gained a "Find your type" button and a time estimate. The desktop nav gaine
 **11. Readable for everyone.**
 Gray and small gold text were darkened slightly to pass contrast checks. The gold from the design stays for fills and large type. Every page passes an automated accessibility check on desktop and phone, and the whole quiz works by keyboard.
 
+**12. The feeling of an old, magical book.**
+The site should feel like finding an old book with something living in it. The paper now has a fine grain and warm, yellowed edges. The only color is light: thin bands of spectrum fall across the page, as if the sun came through a crystal on the windowsill. A spark of the same light travels along the lines of the symbol, small glints twinkle around it on Home, and buttons catch the light when you point at them. Type pages open with an illuminated first letter.
+
+**13. The result is a moment, not a score.**
+The result shows the symbol with your point lit and your two lines drawn: toward growth in prism light, toward stress in a dashed line. It quotes the type's motto (or its inner message), and "Save as image" makes a portrait card to keep or share.
+
+**14. A calmer check.**
+The statements sit closer to the scale, the 1 to 5 buttons are taller, and each new statement slides in from the side you're moving toward.
+
+**15. The symbol teaches the lines.**
+Each type page draws its growth and stress arrows on the symbol and names them in one sentence, so the lines inside the circle finally mean something.
+
+**16. Smaller details.** The desktop nav sits together like a book's running head, and every number on the Home symbol leads to that type.
+
 ## Details worth showing
 
 - The symbol is drawn in code as sharp vector lines that draw themselves in on the first visit.

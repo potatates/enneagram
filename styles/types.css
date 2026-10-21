@@ -62,6 +62,13 @@
 .type-header .type-sub { margin: 4px 0 0; font-style: italic; color: var(--ink-soft); }
 .type-header .enneagram { width: 100%; max-width: 260px; margin: 22px 0 6px; }
 
+.paths { list-style: none; margin: 0 0 18px; padding: 0; display: grid; gap: 6px; font-size: 1rem; line-height: 1.4; }
+.paths li { display: grid; grid-template-columns: 26px 1fr; gap: 8px; align-items: baseline; }
+.paths .key { height: 0; border-top: 2px solid; transform: translateY(-0.3em); }
+.paths .growth .key { border-image: linear-gradient(90deg, var(--prism)) 1; }
+.paths .stress .key { border-top: 1.5px dashed var(--ink); }
+.paths a { color: inherit; }
+.paths a:hover { color: var(--gold-text); }
 .facts { margin: 14px 0 0; display: grid; gap: 12px; font-size: 1rem; }
 .facts dt { font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-soft); }
 .facts dd { margin: 2px 0 0; }

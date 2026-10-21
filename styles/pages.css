@@ -12,7 +12,10 @@
 .home-title .t2 { font-size: clamp(1.6rem, 1.1rem + 1.8vw, 2.4rem); letter-spacing: 0.13em; margin: 0.45em 0 0.35em; }
 .home-title .t3 { font-size: clamp(3.2rem, 1.9rem + 4.6vw, 4.85rem); letter-spacing: 0.15em; }
 
-.home .enneagram { width: min(360px, 78vw); margin-top: clamp(20px, 4vw, 28px); }
+.home-orb { position: relative; width: min(360px, 78vw); margin-top: clamp(20px, 4vw, 28px); }
+.home .enneagram { width: 100%; }
+.home-orb .glints { position: absolute; inset: 0; pointer-events: none; }
+
 
 .home-cta { margin-top: 36px; }
 .home-note { margin: 14px 0 0; font-size: 1.05rem; color: var(--ink-soft); text-wrap: balance; }

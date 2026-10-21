@@ -17,12 +17,12 @@
 .home-mark svg { width: 100%; height: 100%; fill: none; stroke: currentColor; stroke-width: 1.2; }
 body[data-route="home"] .home-mark { visibility: hidden; }
 
-/* Figma: three links spread across a 930px row, current one underlined. */
+/* Like a book's running head: three links set close together, current one underlined. */
 .top-nav {
-  display: flex; justify-content: space-between;
-  width: min(930px, 100% - 120px);
-  font-size: var(--size-nav);
+  display: flex; justify-content: center; align-items: baseline; gap: 1.1em;
+  font-size: 1.28rem; letter-spacing: 0.02em;
 }
+.top-nav .sep { font-size: 0.55em; color: var(--gold); transform: translateY(-0.35em); opacity: 0.8; }
 .top-nav a {
   text-decoration: none;
   padding-bottom: 3px;
