@@ -63,7 +63,7 @@ The statements sit closer to the scale, the 1 to 5 buttons are taller, and each 
 **15. The symbol teaches the lines.**
 Each type page draws its growth and stress arrows on the symbol and names them in one sentence, so the lines inside the circle finally mean something.
 
-**16. Smaller details.** The desktop nav sits together like a book's running head and stays pinned while you scroll. Every number on the Home symbol leads to that type. The dark types sidebar can be closed for a wider reading page, and the site remembers that choice.
+**16. Smaller details.** The desktop nav sits together like a book's running head and stays pinned while you scroll. Every number on the Home symbol leads to that type. The dark types sidebar folds away with a small arrow button for a wider reading page, and the site remembers that choice.
 
 ## Details worth showing
 

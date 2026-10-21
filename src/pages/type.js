@@ -8,9 +8,9 @@
   const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 
   function sidebar(current) {
-    return `<button class="sb-open" type="button" aria-controls="type-sidebar" aria-expanded="false"><span>All types</span></button>
+    return `<button class="sb-open" type="button" aria-controls="type-sidebar" aria-expanded="false" aria-label="Show all types" title="Show all types"><span aria-hidden="true">›</span></button>
       <nav class="type-sidebar" id="type-sidebar" aria-label="All types">
-      <button class="sb-close" type="button" aria-controls="type-sidebar" aria-expanded="true">Close <span aria-hidden="true">«</span></button>
+      <button class="sb-close" type="button" aria-controls="type-sidebar" aria-expanded="true" aria-label="Hide all types" title="Hide all types"><span aria-hidden="true">‹</span></button>
       ${Object.values(T.triads).map((triad) => `
         <p class="sb-center"><a href="#understand">${triad.label}</a></p>
         <ul>${triad.types.map((n) => `<li><a href="#type-${n}" ${n === current ? 'aria-current="page"' : ''}>Type ${n}</a></li>`).join('')}</ul>`).join('')}
