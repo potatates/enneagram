@@ -39,7 +39,7 @@
   // options.link: function(n) returning a URL, which makes each number a link.
   // options.label: accessible name.
   // options.highlight: a type number to mark in gold.
-  // options.sheen: small prism glints that twinkle now and then on the circle.
+  // options.sheen: a spot of prism color that travels along the lines.
   // options.paths: a type number whose growth and stress lines are drawn as arrows.
   function create(options = {}) {
     const id = 'prism-' + (++uid);
@@ -62,12 +62,10 @@
     const hexad = el('path', { class: 'figure', d: path([1, 4, 2, 8, 5, 7]) }, svg);
 
     if (options.sheen) {
-      // Now and then a small star of prism light glints where the lines meet the circle, one at a time.
-      [9, 4, 2, 7, 5, 1].forEach((n, i) => {
-        const [x, y] = point(n, R), k = 5;
-        const d = `M${x} ${y - k} Q${x} ${y} ${x + k} ${y} Q${x} ${y} ${x} ${y + k} Q${x} ${y} ${x - k} ${y} Q${x} ${y} ${x} ${y - k} Z`;
-        el('path', { class: 'glint-star', d, fill: `url(#${id})`, style: `--delay:${(i * 1.6).toFixed(1)}s` }, svg);
-      });
+      // A short spot of prism color that runs quickly along each figure, no wider than the line.
+      for (const [d, dur, delay] of [[path([1, 4, 2, 8, 5, 7]), 6, 0], [path([9, 3, 6]), 4.5, 1.8]]) {
+        el('path', { class: 'sheen', d, stroke: `url(#${id})`, style: `--dur:${dur}s; --delay:${delay}s` }, svg);
+      }
     }
 
     if (options.paths) {
@@ -100,7 +98,7 @@
 
     // Path lengths for the draw-in animation.
     ring.style.setProperty('--len', (2 * Math.PI * R).toFixed(1));
-    for (const p of [triangle, hexad]) {
+    for (const p of [triangle, hexad, ...svg.querySelectorAll('.sheen')]) {
       const pts = p.getAttribute('d').match(/-?\d+\.\d+ -?\d+\.\d+/g).map((s) => s.split(' ').map(Number));
       let len = 0;
       for (let i = 0; i < pts.length; i++) {
@@ -108,6 +106,10 @@
         len += Math.hypot(b[0] - a[0], b[1] - a[1]);
       }
       p.style.setProperty('--len', len.toFixed(1));
+      if (p.classList.contains('sheen')) {
+        p.style.strokeDasharray = `9 ${(len - 9).toFixed(1)}`;
+        p.style.setProperty('--neg-len', (-len).toFixed(1));
+      }
     }
     return svg;
   }

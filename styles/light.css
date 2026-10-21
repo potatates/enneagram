@@ -50,7 +50,8 @@ body.lights-off { background: var(--dark); transition: background var(--slow) va
 body { transition: background var(--slow) var(--ease); }
 body.lights-off .site-header, body.lights-off .light-title, body.lights-off .lamp { color: #f3ead6; }
 body.lights-off .menu-button { color: #f3ead6; }
-body.lights-off .site-header { background: var(--dark); border-bottom-color: #ffffff1a; }
+body.lights-off .site-header, body.lights-off.scrolled .site-header { background: var(--dark); }
+body.lights-off .site-header::after { background: linear-gradient(var(--dark), transparent); }
 body.lights-off .light-text { color: #2b2415; transition: color var(--slow) var(--ease); }
 body.lights-off .light-text strong { color: #40351d; }
 body.lights-off .light-reveal { opacity: 1; }

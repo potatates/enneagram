@@ -52,7 +52,7 @@ Home gained a "Find your type" button and a time estimate. The desktop nav gaine
 Gray and small gold text were darkened slightly to pass contrast checks. The gold from the design stays for fills and large type. Every page passes an automated accessibility check on desktop and phone, and the whole quiz works by keyboard.
 
 **12. The feeling of an old, magical book.**
-The site should feel like finding an old book with something living in it. The paper now has a fine grain and warm, yellowed edges. The only color is prism light, used sparingly: small stars glint now and then where the symbol's lines meet the circle, and buttons catch the light when you point at them. (A version with spectrum bands across the whole page and sparks running along the lines was tried and dropped as too much.) Type pages open with an illuminated first letter.
+The site should feel like finding an old book with something living in it. The paper now has a fine grain and warm, yellowed edges. The only color is prism light, used sparingly: a spot of color runs quickly along the symbol's lines, no wider than the line itself, and buttons catch the light when you point at them. (Spectrum bands across the page, thick glowing sparks and twinkling stars were all tried and dropped as too much.) Type pages open with an illuminated first letter.
 
 **13. The result is a moment, not a score.**
 The result shows the symbol with your point lit and your two lines drawn: toward growth in prism light, toward stress in a dashed line. It quotes the type's motto (or its inner message), and "Save as image" makes a portrait card to keep or share.
@@ -63,7 +63,7 @@ The statements sit closer to the scale, the 1 to 5 buttons are taller, and each 
 **15. The symbol teaches the lines.**
 Each type page draws its growth and stress arrows on the symbol and names them in one sentence, so the lines inside the circle finally mean something.
 
-**16. Smaller details.** The desktop nav sits together like a book's running head and stays pinned while you scroll. Every number on the Home symbol leads to that type. The dark types sidebar folds away with a small arrow button for a wider reading page, and the site remembers that choice.
+**16. Smaller details.** The desktop nav sits together like a book's running head and stays pinned while you scroll: a slim bar of frosted paper that fades out below instead of ending in a line. Every number on the Home symbol leads to that type. The dark types sidebar folds away with a small arrow button for a wider reading page, and the site remembers that choice.
 
 ## Details worth showing
 

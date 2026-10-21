@@ -1,5 +1,5 @@
 /* The magic: an old page, with a little prism light caught in it.
-   Color appears only as light (glints, the growth line, the first letter),
+   Color appears only as light (the spot on the symbol, the growth line, the first letter),
    so the paper, ink and gold of the design stay in charge. */
 
 :root {
@@ -20,31 +20,19 @@ body::before {
 /* The dark reading room has no paper grain. */
 body.lights-off::before { opacity: 0; }
 
-/* ---------- Glints: tiny four-point stars ---------- */
-
-.glint {
-  position: absolute; width: var(--s, 12px); height: var(--s, 12px); pointer-events: none;
-  background: var(--c, var(--gold));
-  clip-path: polygon(50% 0, 60% 40%, 100% 50%, 60% 60%, 50% 100%, 40% 60%, 0 50%, 40% 40%);
-  opacity: 0; animation: twinkle var(--t, 5s) ease-in-out var(--d, 0s) infinite;
-}
-@keyframes twinkle {
-  0%, 70%, 100% { opacity: 0; transform: scale(0.3) rotate(0deg); }
-  80% { opacity: 0.9; transform: scale(1) rotate(45deg); }
-  90% { opacity: 0; transform: scale(0.4) rotate(90deg); }
-}
-
 /* ---------- The symbol ---------- */
 
-.enneagram .glint-star {
-  transform-box: fill-box; transform-origin: center;
-  opacity: 0; animation: star 9.6s ease-in-out var(--delay) infinite;
+/* A spot of color running along the lines: same width as the line, no glow. */
+.enneagram .sheen {
+  fill: none; stroke-width: 0.6; stroke-linecap: round; stroke-linejoin: round;
+  animation: run var(--dur) linear var(--delay) infinite;
 }
-.enneagram.draw .glint-star { animation-delay: calc(var(--delay) + 3s); }
-@keyframes star {
-  0%, 8%, 100% { opacity: 0; transform: scale(0.2) rotate(0deg); }
-  4% { opacity: 1; transform: scale(1) rotate(45deg); }
+.enneagram.draw .sheen {
+  opacity: 0;
+  animation: run var(--dur) linear calc(var(--delay) + 3s) infinite, appear 0.8s linear calc(var(--delay) + 3s) forwards;
 }
+@keyframes run { from { stroke-dashoffset: 0; } to { stroke-dashoffset: var(--neg-len); } }
+@keyframes appear { to { opacity: 1; } }
 
 /* Growth and stress lines on a type page. */
 .enneagram .path-line { stroke-width: 1.3; stroke-linecap: round; }
@@ -79,7 +67,6 @@ body.lights-off::before { opacity: 0; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .glint, .enneagram .glint-star, .pill:hover { animation: none !important; }
-  .enneagram .glint-star { opacity: 0.8; }
-  .glint { opacity: 0.6; }
+  .enneagram .sheen { display: none; }
+  .pill:hover { animation: none !important; }
 }

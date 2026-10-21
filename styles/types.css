@@ -46,14 +46,16 @@
 
 /* The header sits over the sidebar on these pages. */
 @media (min-width: 1181px) {
-  body[data-route^="type-"] .site-header { padding-left: var(--sidebar); background: linear-gradient(90deg, transparent var(--sidebar), var(--paper) var(--sidebar)); }
-  body[data-route^="type-"] .home-mark { left: 34px; color: var(--night-ink); }
+  /* The bar starts where the sidebar ends, so its frosting never smears the sidebar's edge. */
+  body[data-route^="type-"] .site-header { left: var(--sidebar); }
+  body[data-route^="type-"] .home-mark { left: calc(34px - var(--sidebar)); }
+  body[data-route^="type-"] .home-mark { color: var(--night-ink); }
 
   /* The sidebar can be closed; a small tab on the left edge brings it back. */
-  .type-sidebar, .type-layout .page, body[data-route^="type-"] .site-header { transition: transform var(--slow) var(--ease), margin var(--slow) var(--ease), padding var(--slow) var(--ease); }
+  .type-sidebar, .type-layout .page, body[data-route^="type-"] .site-header, body[data-route^="type-"] .home-mark { transition: transform var(--slow) var(--ease), margin var(--slow) var(--ease), padding var(--slow) var(--ease), left var(--slow) var(--ease), background var(--fast) var(--ease); }
   body.sidebar-closed .type-sidebar { transform: translateX(-100%); visibility: hidden; transition: transform var(--slow) var(--ease), visibility 0s var(--slow); }
   body.sidebar-closed .type-layout .page { margin-left: auto; margin-right: auto; padding-left: var(--gutter); }
-  body.sidebar-closed[data-route^="type-"] .site-header { padding-left: var(--gutter); background: var(--paper); }
+  body.sidebar-closed[data-route^="type-"] .site-header { left: 0; }
   body.sidebar-closed[data-route^="type-"] .home-mark { left: var(--gutter); color: inherit; }
 }
 .sb-close, .sb-open {
@@ -62,7 +64,7 @@
   transition: background var(--fast) var(--ease), color var(--fast) var(--ease);
 }
 .sb-close span, .sb-open span { transform: translateY(-0.08em); }
-.sb-close { position: absolute; top: calc(var(--header-h) - 4px); right: 18px; color: #cfc6b4; border: 1px solid #ffffff2e; }
+.sb-close { position: absolute; top: calc(var(--header-h) + 8px); right: 18px; color: #cfc6b4; border: 1px solid #ffffff2e; }
 .sb-close:hover, .sb-close:focus-visible { color: #fff; background: #ffffff14; }
 .sb-open {
   position: fixed; left: 14px; top: 50%; transform: translateY(-50%); z-index: 6;
