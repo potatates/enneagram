@@ -1,12 +1,17 @@
 /* Top nav (desktop) and the dark slide-in menu (phone). */
 
+/* Pinned to the top, on its own strip of paper so text scrolls under it cleanly. */
 .site-header {
-  position: absolute; inset: 0 0 auto 0;
+  position: fixed; inset: 0 0 auto 0;
+  background: var(--paper);
+  border-bottom: 1px solid transparent;
+  transition: border-color var(--fast) var(--ease), background var(--slow) var(--ease);
   height: var(--header-h);
   display: flex; align-items: center; justify-content: center;
   padding: 0 var(--gutter);
   z-index: 10;
 }
+body.scrolled .site-header { border-bottom-color: var(--ink-faint); }
 
 .home-mark {
   position: absolute; left: var(--gutter); top: 50%; transform: translateY(-50%);

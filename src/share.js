@@ -81,23 +81,11 @@
     c.width = W; c.height = H;
     const ctx = c.getContext('2d');
 
-    // Paper, warm edges, and a band of prism light from the top right.
+    // Paper with warm edges.
     ctx.fillStyle = PAPER; ctx.fillRect(0, 0, W, H);
     const v = ctx.createRadialGradient(W / 2, H / 2, H * 0.3, W / 2, H / 2, H * 0.75);
     v.addColorStop(0, '#b47b0000'); v.addColorStop(1, '#b47b0026');
     ctx.fillStyle = v; ctx.fillRect(0, 0, W, H);
-    ctx.save();
-    // A band of spectrum across the top right, fading at both ends.
-    ctx.translate(W * 0.97, H * 0.035); ctx.rotate(-0.42); ctx.filter = 'blur(2px)';
-    const band = document.createElement('canvas'); band.width = 600; band.height = 34;
-    const b = band.getContext('2d');
-    b.fillStyle = prismGradient(b, 0, 0, 0, 34, ''); b.fillRect(0, 0, 600, 34);
-    b.globalCompositeOperation = 'destination-in';
-    const fade = b.createLinearGradient(0, 0, 600, 0);
-    fade.addColorStop(0, '#0000'); fade.addColorStop(0.35, '#000'); fade.addColorStop(0.65, '#000'); fade.addColorStop(1, '#0000');
-    b.fillStyle = fade; b.fillRect(0, 0, 600, 34);
-    ctx.globalAlpha = 0.3; ctx.drawImage(band, -300, -17);
-    ctx.restore();
 
     ctx.fillStyle = INK; ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic';
     ctx.font = `26px ${BODY}`; ctx.fillStyle = SOFT;

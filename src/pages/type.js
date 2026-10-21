@@ -8,7 +8,9 @@
   const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 
   function sidebar(current) {
-    return `<nav class="type-sidebar" aria-label="All types">
+    return `<button class="sb-open" type="button" aria-controls="type-sidebar" aria-expanded="false"><span>All types</span></button>
+      <nav class="type-sidebar" id="type-sidebar" aria-label="All types">
+      <button class="sb-close" type="button" aria-controls="type-sidebar" aria-expanded="true">Close <span aria-hidden="true">«</span></button>
       ${Object.values(T.triads).map((triad) => `
         <p class="sb-center"><a href="#understand">${triad.label}</a></p>
         <ul>${triad.types.map((n) => `<li><a href="#type-${n}" ${n === current ? 'aria-current="page"' : ''}>Type ${n}</a></li>`).join('')}</ul>`).join('')}
@@ -80,6 +82,19 @@
         link: (k) => '#type-' + k, highlight: n, paths: n,
         label: `The enneagram, with Type ${n} marked and arrows to Type ${G[n]} (growth) and Type ${St[n]} (stress)`,
       }));
+
+      // Open or close the sidebar, and remember the choice for the next type page.
+      const setSidebar = (open) => {
+        document.body.classList.toggle('sidebar-closed', !open);
+        page.querySelector('.sb-open').setAttribute('aria-expanded', String(open));
+        page.querySelector('.sb-close').setAttribute('aria-expanded', String(open));
+        try { localStorage.setItem('enneagram-sidebar', open ? 'open' : 'closed'); } catch (e) { /* keep it for this visit only */ }
+      };
+      let saved = null;
+      try { saved = localStorage.getItem('enneagram-sidebar'); } catch (e) { /* no storage */ }
+      setSidebar(saved !== 'closed');
+      page.querySelector('.sb-close').addEventListener('click', () => { setSidebar(false); page.querySelector('.sb-open').focus(); });
+      page.querySelector('.sb-open').addEventListener('click', () => { setSidebar(true); page.querySelector('.sb-close').focus(); });
 
       page.querySelector('.check-this')?.addEventListener('click', () => {
         const st = E.state.get();

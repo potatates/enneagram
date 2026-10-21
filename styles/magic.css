@@ -1,6 +1,6 @@
-/* The magic: an old page, and light through a prism falling across it.
-   Color appears only as light (beams, glints, the sheen on the symbol), so
-   the paper, ink and gold of the design stay in charge. */
+/* The magic: an old page, with a little prism light caught in it.
+   Color appears only as light (glints, the growth line, the first letter),
+   so the paper, ink and gold of the design stay in charge. */
 
 :root {
   --prism: #d4517a, #e0892a, #c9a417, #5fa84a, #2b9bb3, #5a6fd6, #9a5cc8;
@@ -17,33 +17,8 @@ body::before {
   transition: opacity var(--slow) var(--ease);
 }
 
-/* ---------- Light through a prism ---------- */
-
-.prism-light { position: fixed; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; transition: opacity var(--slow) var(--ease); }
-.beam {
-  position: absolute; display: block;
-  /* The spectrum runs across the beam, as light leaves a prism; the ends fade out. */
-  background: linear-gradient(180deg, var(--prism));
-  -webkit-mask-image: linear-gradient(90deg, transparent, #000 30%, #000 65%, transparent);
-  mask-image: linear-gradient(90deg, transparent, #000 30%, #000 65%, transparent);
-  filter: blur(1.5px); opacity: var(--o);
-  transform-origin: center;
-  animation: breathe 16s var(--ease) infinite alternate;
-}
-/* A long band from the top right, as if the sun came through a crystal on the sill. */
-.b1 { --o: 0.3; width: 64vw; height: 30px; right: -16vw; top: 12vh; transform: rotate(-24deg); }
-.b2 { --o: 0.2; width: 36vw; height: 12px; right: -6vw; top: 25vh; transform: rotate(-24deg); animation-delay: -6s; }
-/* A small spill at the bottom left. */
-.b3 { --o: 0.18; width: 30vw; height: 18px; left: -8vw; bottom: 10vh; transform: rotate(-24deg); animation-delay: -11s; }
-
-@keyframes breathe {
-  from { translate: 0 0; opacity: var(--o, 0.16); }
-  to { translate: -3vw 2vh; opacity: calc(var(--o, 0.16) * 0.55); }
-}
-
-/* The dark reading room has no sunlight. */
-body.lights-off .prism-light, body.lights-off::before { opacity: 0; }
-/* The type sidebar is dark too; keep the light on the page. */
+/* The dark reading room has no paper grain. */
+body.lights-off::before { opacity: 0; }
 
 /* ---------- Glints: tiny four-point stars ---------- */
 
@@ -61,19 +36,15 @@ body.lights-off .prism-light, body.lights-off::before { opacity: 0; }
 
 /* ---------- The symbol ---------- */
 
-.enneagram .sheen {
-  fill: none; stroke-width: 1.1; stroke-linecap: round; stroke-linejoin: round;
-  stroke-dashoffset: 0; opacity: 0.95;
-  animation: run var(--dur) linear var(--delay) infinite;
+.enneagram .glint-star {
+  transform-box: fill-box; transform-origin: center;
+  opacity: 0; animation: star 9.6s ease-in-out var(--delay) infinite;
 }
-.enneagram .sheen.blur { stroke-width: 2.6; opacity: 0.4; }
-.enneagram.draw .sheen {
-  opacity: 0;
-  animation: run var(--dur) linear calc(var(--delay) + 3s) infinite, appear 1.2s linear calc(var(--delay) + 3s) forwards;
+.enneagram.draw .glint-star { animation-delay: calc(var(--delay) + 3s); }
+@keyframes star {
+  0%, 8%, 100% { opacity: 0; transform: scale(0.2) rotate(0deg); }
+  4% { opacity: 1; transform: scale(1) rotate(45deg); }
 }
-.enneagram.draw .sheen.blur { --peak: 0.4; }
-@keyframes appear { to { opacity: var(--peak, 0.95); } }
-@keyframes run { to { stroke-dashoffset: var(--neg-len); } }
 
 /* Growth and stress lines on a type page. */
 .enneagram .path-line { stroke-width: 1.3; stroke-linecap: round; }
@@ -108,6 +79,7 @@ body.lights-off .prism-light, body.lights-off::before { opacity: 0; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .beam, .glint, .enneagram .sheen, .pill:hover { animation: none !important; }
+  .glint, .enneagram .glint-star, .pill:hover { animation: none !important; }
+  .enneagram .glint-star { opacity: 0.8; }
   .glint { opacity: 0.6; }
 }

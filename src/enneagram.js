@@ -39,7 +39,7 @@
   // options.link: function(n) returning a URL, which makes each number a link.
   // options.label: accessible name.
   // options.highlight: a type number to mark in gold.
-  // options.sheen: a spark of prism light that travels along the lines.
+  // options.sheen: small prism glints that twinkle now and then on the circle.
   // options.paths: a type number whose growth and stress lines are drawn as arrows.
   function create(options = {}) {
     const id = 'prism-' + (++uid);
@@ -52,8 +52,6 @@
     const grad = el('linearGradient', { id, gradientUnits: 'userSpaceOnUse', x1: -55, y1: -55, x2: 55, y2: 55 }, defs);
     PRISM.forEach((c, i) => el('stop', { offset: (i / (PRISM.length - 1)).toFixed(3), 'stop-color': c }, grad));
     if (!still()) el('animateTransform', { attributeName: 'gradientTransform', type: 'rotate', from: '0', to: '360', dur: '24s', repeatCount: 'indefinite' }, grad);
-    const glow = el('filter', { id: id + '-glow', x: '-20%', y: '-20%', width: '140%', height: '140%' }, defs);
-    el('feGaussianBlur', { stdDeviation: 0.9 }, glow);
     const arrow = (name, cls) => {
       const m = el('marker', { id: id + '-' + name, viewBox: '0 0 10 10', refX: 8, refY: 5, markerWidth: 5, markerHeight: 5, orient: 'auto-start-reverse' }, defs);
       el('path', { d: 'M0 1 L9 5 L0 9 Z', class: 'arrowhead ' + cls }, m);
@@ -64,13 +62,12 @@
     const hexad = el('path', { class: 'figure', d: path([1, 4, 2, 8, 5, 7]) }, svg);
 
     if (options.sheen) {
-      // A short dash of colored light that runs around each figure, with a soft glow under it.
-      for (const [d, dur, delay] of [[path([1, 4, 2, 8, 5, 7]), 14, 0], [path([9, 3, 6]), 9, 2.5]]) {
-        for (const g of [true, false]) {
-          el('path', { class: 'sheen' + (g ? ' blur' : ''), d, stroke: `url(#${id})`, ...(g ? { filter: `url(#${id}-glow)` } : {}),
-            style: `--dur:${dur}s; --delay:${delay}s` }, svg);
-        }
-      }
+      // Now and then a small star of prism light glints where the lines meet the circle, one at a time.
+      [9, 4, 2, 7, 5, 1].forEach((n, i) => {
+        const [x, y] = point(n, R), k = 5;
+        const d = `M${x} ${y - k} Q${x} ${y} ${x + k} ${y} Q${x} ${y} ${x} ${y + k} Q${x} ${y} ${x - k} ${y} Q${x} ${y} ${x} ${y - k} Z`;
+        el('path', { class: 'glint-star', d, fill: `url(#${id})`, style: `--delay:${(i * 1.6).toFixed(1)}s` }, svg);
+      });
     }
 
     if (options.paths) {
@@ -103,7 +100,7 @@
 
     // Path lengths for the draw-in animation.
     ring.style.setProperty('--len', (2 * Math.PI * R).toFixed(1));
-    for (const p of [triangle, hexad, ...svg.querySelectorAll('.sheen')]) {
+    for (const p of [triangle, hexad]) {
       const pts = p.getAttribute('d').match(/-?\d+\.\d+ -?\d+\.\d+/g).map((s) => s.split(' ').map(Number));
       let len = 0;
       for (let i = 0; i < pts.length; i++) {
@@ -111,10 +108,6 @@
         len += Math.hypot(b[0] - a[0], b[1] - a[1]);
       }
       p.style.setProperty('--len', len.toFixed(1));
-      if (p.classList.contains('sheen')) {
-        p.style.strokeDasharray = `14 ${(len - 14).toFixed(1)}`;
-        p.style.setProperty('--neg-len', (-len).toFixed(1));
-      }
     }
     return svg;
   }

@@ -56,5 +56,10 @@
     if (route.startsWith('type-')) { expand.setAttribute('aria-expanded', 'true'); typesList.hidden = false; }
   }
 
+  // A hairline under the pinned header once the page has scrolled.
+  const onScroll = () => document.body.classList.toggle('scrolled', window.scrollY > 4);
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
   E.nav = { setCurrent, close };
 })();
